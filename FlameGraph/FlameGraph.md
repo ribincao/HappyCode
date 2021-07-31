@@ -38,6 +38,7 @@ cd FlameGraph
 
 sudo perf record -F 99 -p 12345 -g -- sleep 60
 perf script -i perf.data &> perf.unfold
+# 这里一定要注意是 stackcollapse-perf.pl , 不是其他的
 ./stackcollapse-perf.pl perf.unfold &> perf.folded
 ./flamegraph.pl perf.folded > perf.svg
 ```
