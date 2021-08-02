@@ -16,6 +16,22 @@ async def auth(ws):
         print(rsp)
 
 
+async def sign_up(ws):
+    while True:
+        username = input("Please Input your username:\n")
+        passwd = input("Please input your password:\n")
+        req = username + ":" + passwd
+        try:
+            await ws.send(req)
+            rsp = await ws.recv()
+        except websockets.ConnectionClosedError:
+            print("server closed")
+            return False
+        if "Success" in rsp:
+            return True
+        print(rsp)
+
+
 async def talk(ws):
     while True:
         data = input("say something: \n")
@@ -26,11 +42,21 @@ async def talk(ws):
 
 async def main():
     async with websockets.connect('ws://localhost:1060') as ws:
+        select = ''
+        while select != "0" and select != "1":
+            select = input("Please select([1] -- sign in | [0] -- sign up):\n")
         try:
-            ret = await auth(ws)
-            if ret:
-                print("log in success")
-                await talk(ws)
+            await ws.send(select)
+            if select == '1':
+                ret = await auth(ws)
+                if ret:
+                    print("log in success")
+                    await talk(ws)
+            if select == '0':
+                ret = await sign_up(ws)
+                if ret:
+                    print("sign up success.")
+                    await talk(ws)
         except websockets.ConnectionClosedOK:
             print("connect closed.")
         except Exception as e:
