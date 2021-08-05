@@ -1,0 +1,18 @@
+2021-08-04 14:49:26.712 | ERROR    | __main__:nested:15 - What?!
+Traceback (most recent call last):
+
+  File "log.py", line 18, in <module>
+    nested(0)
+    └ <function nested at 0x7f787635cb70>
+
+> File "log.py", line 13, in nested
+    func(5, c)
+    │       └ 0
+    └ <function func at 0x7f78764a22f0>
+
+  File "log.py", line 9, in func
+    return a / b
+           │   └ 0
+           └ 5
+
+ZeroDivisionError: division by zero

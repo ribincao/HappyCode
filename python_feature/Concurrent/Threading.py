@@ -2,16 +2,6 @@ import datetime
 import threading
 import time
 
-"""
-Thread
-Lock
-RLock
-Condition
-Semaphore
-Event
-Timer
-"""
-
 
 def local_var():
     data = threading.local()

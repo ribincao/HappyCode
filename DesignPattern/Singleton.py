@@ -1,13 +1,12 @@
-"""
-author: ribincao
-desc: Singleton Demo
-"""
-from typing import List
-import threading
-import time
+class Singleton(object):
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if not isinstance(cls._instance, cls):
+            cls._instance = object.__new__(cls)
+        return cls._instance
 
 
-#  装饰器
 def singleton(cls):
     _instance = dict()
 
@@ -18,49 +17,24 @@ def singleton(cls):
     return instance
 
 
+class S(Singleton):
+
+    def __init__(self, name):
+        super(S, self).__init__()
+        self.name = name
+
+
 @singleton
 class Test:
-
-    def __init__(self):
-        pass
+    pass
 
 
-class Singleton:
-
-    # _lock = threading.Lock()
-
-    def __init__(self, *args, **kwargs):
-        # time.sleep(1)
-        pass
-
-    @classmethod
-    def get_instance(cls, *args, **kwargs):
-        if not hasattr(Singleton, '_instance'):
-            Singleton._instance = Singleton(*args, **kwargs)
-        return Singleton._instance
-
-    # def __new__(cls, *args, **kwargs):
-    #     if not hasattr(cls, '_instance'):
-    #         with Singleton._lock:
-    #             if not hasattr(cls, '_instance'):
-    #                 Singleton._instance = super().__new__(cls)
-    #
-    #         return Singleton._instance
-
-
-# def task(*args, **kwargs):
-#     obj = Singleton()
-#     print(f'obj： {obj}')
+def task():
+    obj = Test()
+    print(id(obj))
 
 
 if __name__ == '__main__':
-    t1, t2 = Test(), Test()
-    print(f't1: {id(t1)}, t2: {id(t2)}')
-
-    s1, s2 = Singleton(), Singleton()
-    s3, s4 = Singleton.get_instance(), Singleton.get_instance()
-    print(f's1: {id(s1)}, s2: {id(s2)}, s3: {id(s3)}, s4: {id(s4)}')
-
-    # for i in range(10):
-    #     t = threading.Thread(target=task, args=[i, ])
-    #     t.start()
+    from threading import Thread
+    for i in range(5):
+        Thread(target=task).start()

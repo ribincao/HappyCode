@@ -1,0 +1,34 @@
+Python比较好用的库
+
+- 异步编程
+    - asyncio
+    - gevent
+- 并发编程
+    - multiprocessing
+    - stackless
+    - threading
+- 网络编程
+    - websockets
+- 上下文管理器: 协议 `__enter__` `__exit__`
+    - contextlib
+- 日志
+    - logging
+    - loguru
+- 汇编语言分析
+    - dis
+- 热更新
+    - reload
+- 构建类
+    - dataclasses
+- schema校验
+    - pydantic
+- 序列化/反序列化
+    - json
+    - pickle
+- webserver
+    - flask
+    - fastapi
+- 数据库操作
+    - pymysql
+    - redis
+    - motor: Asynchronous Python driver for MongoDB
