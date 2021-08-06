@@ -32,3 +32,5 @@ Python比较好用的库
     - pymysql
     - redis
     - motor: Asynchronous Python driver for MongoDB
+- 类型检查
+    - typing
