@@ -72,17 +72,17 @@ def run(search_path):
     result = get_module_rely_name(py_file_map)
     if DEBUG:
         print(f"{search_path} 模块下的所有依赖关系： {result}")
+
+    for module, rely in result.items():
+        if module in rely:
+            rely.remove(module)
     title = search_path.split("\\")[-1]
     output = json.dumps(result)
     with open(title + ".json", "w") as f:
         f.write(output)
 
 
-
-
-
 if __name__ == '__main__':
-    """ 这是一个 windows 下的查找文件依赖关系的代码思路"""
     DEBUG = 0
     MODULE = ["freetime", "hall", "matchcomm", ""]
     absolute_path = r"D:\majiang\hall5"
@@ -93,6 +93,4 @@ if __name__ == '__main__':
 
     run(absolute_path + "\hall51")
     run(absolute_path + "\hall37")
-
-
 
