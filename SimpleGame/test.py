@@ -19,3 +19,5 @@ cursor.execute(sql)
 cursor.close()
 conn.close()
 print("ok")
+
+

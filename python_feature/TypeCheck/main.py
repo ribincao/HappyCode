@@ -1,4 +1,3 @@
-import typing
 from typing import *
 
 
@@ -7,7 +6,9 @@ Vector = List[float]
 Options = Dict[str, str]
 Address = Tuple[str, int]
 Port = Union[str, int]
-Host = Optional[int]
+Host = Optional[int]  # Union[int, None
+# Mode = Literal['r', 'w', 'rb', 'wb']
+# Const: Final = 3.14
 
 # new type: int <- UserId <- PlayId
 UserId = NewType("UserId", int)
@@ -28,7 +29,7 @@ T = TypeVar('T')  # Can be anything
 S = TypeVar('S', int, str)  # Must be str or int
 
 
-class Test(Generic[T, S, str]):
+class Test(Generic[T, S]):
     def __init__(self, name: T):
         self.name = name
 
@@ -42,3 +43,10 @@ if __name__ == '__main__':
     f(a)
     b = cast(Test[int, str], a)
     f(b)
+
+    A = Type
+    def f(a: A):
+        print(a)
+        pass
+    f(type(1))
+
