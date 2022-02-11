@@ -37,10 +37,10 @@ class Block(object):
 
 class BlockChain(object):
 
-    def __init__(self):
+    def __init__(self, proof: int):
         self.chains: List[Block] = list()
         self.current_transactions: List[Transaction] = []
-        self.new_block(proof=100, pre_hash="1")
+        self.new_block(proof=proof, pre_hash="1")
 
     def new_block(self, proof: int, pre_hash: str = "") -> Block:
         if not pre_hash:
@@ -83,7 +83,7 @@ class BlockChain(object):
 
 app = Flask(__name__)
 node_identifier = str(uuid4()).replace("-", "")
-block_chain = BlockChain()
+block_chain = BlockChain(proof=100)
 
 
 @app.route("/mine", methods=["GET"])
