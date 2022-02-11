@@ -50,6 +50,7 @@ class BlockChain(object):
                       proof=proof,
                       previous_hash=pre_hash,
                       transactions=self.current_transactions)
+        self.current_transactions = []
         self.chains.append(block)
         return block
 
