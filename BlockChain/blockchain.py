@@ -46,7 +46,7 @@ class BlockChain(object):
                       timestamp=time.time(),
                       proof=proof,
                       previous_hash=pre_hash,
-                      transactions=[])
+                      transactions=self.current_transactions)
         self.chains.append(block)
         return block
 
