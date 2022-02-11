@@ -13,6 +13,9 @@ class Transaction(object):
         self.recipient: str = recipient
         self.amount: float = amount
 
+    def to_dict(self):
+        return self.__dict__
+
 
 class Block(object):
 
@@ -24,10 +27,10 @@ class Block(object):
         self.transactions: List[Transaction] = transactions
 
     def to_dict(self) -> Dict[str, object]:
-        ret = self.__dict__
+        ret = dict(self.__dict__)
         _t = []
         for transaction in self.transactions:
-            _t.append(transaction.__dict__)
+            _t.append(transaction.to_dict())
         ret["transactions"] = _t
         return ret
 
