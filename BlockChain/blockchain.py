@@ -1,5 +1,5 @@
-from typing import List, Optional, Dict
-from flask import Flask
+from typing import List, Optional, Dict, Union
+from flask import Flask, jsonify, request
 from uuid import uuid4
 import hashlib
 import json
@@ -39,7 +39,7 @@ class BlockChain(object):
         self.current_transactions: List[Transaction] = []
         self.new_block(proof=100, pre_hash="1")
 
-    def new_block(self, proof: int, pre_hash: str = "") -> Dict:
+    def new_block(self, proof: int, pre_hash: str = "") -> Block:
         if not pre_hash:
             pre_hash = self.hash(self.last_block)
         block = Block(index=len(self.chains) + 1,
@@ -48,7 +48,7 @@ class BlockChain(object):
                       previous_hash=pre_hash,
                       transactions=[])
         self.chains.append(block)
-        return block.to_dict()
+        return block
 
     def new_transaction(self, sender: str, recipient: str, amount: float) -> int:
         transaction = Transaction(sender, recipient, amount)
@@ -84,12 +84,27 @@ block_chain = BlockChain()
 
 @app.route("/mine", methods=["GET"])
 def mine():
-    return "we'll mine a new Block"
+    last_block = block_chain.last_block
+    last_proof = last_block.proof
+    proof = block_chain.proof_of_work(last_proof)
+
+    block_chain.new_transaction(sender="0", recipient=node_identifier, amount=1)
+    pre_hash = block_chain.hash(last_block)
+    block = block_chain.new_block(proof, pre_hash)
+    response = block.to_dict()
+    response["message"] = "new block forged"
+    return jsonify(response), 200
 
 
 @app.route("/transactions/new", methods=["POST"])
 def new_transaction():
-    return "we'll add a new transaction"
+    req: Dict[str, str] = request.get_json()
+    requires = ["sender", "recipient", "amount"]
+    if not all(param in requires for param in req):
+        return "missing param", 400
+    index = block_chain.new_transaction(req["sender"], req["recipient"], float(req["amount"]))
+    response = {"message": f"transaction will be add to block {index}"}
+    return jsonify(response), 200
 
 
 @app.route("/chain", methods=["GET"])
@@ -101,7 +116,7 @@ def full_chain():
         "chain:": chains,
         "length": len(chains)
     }
-    return json.dumps(response), 200
+    return jsonify(response), 200
 
 
 if __name__ == "__main__":
